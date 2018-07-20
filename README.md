@@ -7,3 +7,6 @@
 
     ansible-playbook -i hosts/dev.yml domain/dev.yml -e domain=adminer.local
 
+# Playbook list
+
+    adminer - adminer.local setup
