@@ -1,0 +1,26 @@
+---
+- name: create domain certificate
+  command: "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/{{ domain }}.key -out /etc/nginx/ssl/{{ domain }}.crt -subj '/C=LT/ST=Kaunas/L=Kaunas/O=Development/CN={{ domain }}'"
+  args:
+    creates: "/etc/nginx/ssl/{{ domain }}.key"
+  become: true
+
+
+- name: ensure nginx domain config file is in place
+  template:
+    src: domain.conf
+    dest: "/etc/nginx/sites-available/{{ domain }}.conf"
+    owner: root
+    mode: 0644
+  notify: reload nginx
+  tags: config
+  become: true
+
+- name: ensure domain is enabled
+  file:
+    src: "/etc/nginx/sites-available/{{ domain }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ domain }}.conf"
+    state: link
+  notify: reload nginx
+  tags: config
+  become: true

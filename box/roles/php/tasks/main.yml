@@ -1,0 +1,14 @@
+---
+- name: ensure php-redis is installed
+  apt:
+    name: php-redis
+    state: present
+  become: true
+  notify: reload php7.1-fpm
+
+- name: ensure php-yaml is installed
+  apt:
+    name: php7.1-yaml
+    state: present
+  become: true
+  notify: reload php7.1-fpm

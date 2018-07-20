@@ -1,0 +1,12 @@
+---
+- name: add fast ciphers
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: Ciphers aes256-ctr,aes128-ctr,aes256-cbc,aes128-cbc,3des-cbc
+  notify: reload ssh
+
+- name: add fast macs
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com,hmac-sha1
+  notify: reload ssh

@@ -1,0 +1,20 @@
+---
+- name: ensure hosts are set
+  lineinfile: dest=/etc/hosts line="127.0.0.1 {{ domain }}"
+  become: true
+
+- name: ensure root dir exists
+  file:
+    dest: "/var/www/{{ domain }}"
+    state: directory
+    mode: 0755
+    owner: vagrant
+  become: true
+
+- name: ensure public_html dir exists
+  file:
+    dest: "/var/www/{{ domain }}/public_html"
+    state: directory
+    mode: 0755
+    owner: vagrant
+  become: true

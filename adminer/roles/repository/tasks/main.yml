@@ -1,0 +1,8 @@
+---
+- name: ensure adminer.php file is in place
+  copy:
+    src: adminer.php
+    dest: "/var/www/{{ domain }}/public_html/index.php"
+    mode: 0644
+  become: true
+  become_user: vagrant

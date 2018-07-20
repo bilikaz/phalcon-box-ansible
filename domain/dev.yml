@@ -1,0 +1,10 @@
+---
+- name: Basic domain setup
+  hosts: dev
+  become: true
+
+  roles:
+    - common
+    - path
+    - nginx
+

@@ -1,0 +1,33 @@
+---
+- name: check if phalcon is installed
+  command: dpkg-query -s php7.1-phalcon
+  register: find_phalcon
+  become: true
+  ignore_errors: true
+
+- name: Download phalcon-repository installer
+  get_url:
+    url: https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh
+    dest: /tmp/script.deb.sh
+    mode: 0777
+  become: true
+  when: find_phalcon.stdout.find('install ok installed') == -1
+
+- name: Execute phalcon-repository.sh
+  shell: /tmp/script.deb.sh
+  become: true
+  when: find_phalcon.stdout.find('install ok installed') == -1
+
+- name: ensure phalcon is installed
+  apt:
+    name: php7.1-phalcon
+    state: present
+  become: true
+  when: find_phalcon.stdout.find('install ok installed') == -1
+  notify: reload php7.1-fpm
+
+- name: switch to php7.1
+  alternatives:
+    name: php
+    path: /usr/bin/php7.1
+

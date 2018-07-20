@@ -1,0 +1,15 @@
+---
+- import_playbook: "../domain/dev.yml"
+  vars:
+    domain: adminer.local
+
+- name: Adminer.local setup
+  hosts: dev
+  become: true
+
+  vars:
+    domain: adminer.local
+
+  roles:
+    - repository
+

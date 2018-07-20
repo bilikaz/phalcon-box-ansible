@@ -1,0 +1,24 @@
+---
+- name: reload nginx
+  service:
+    name: nginx
+    state: reloaded
+  become: true
+
+- name: reload php-fpm
+  service:
+    name: php7.2-fpm
+    state: reloaded
+  become: true
+
+- name: reload php7.1-fpm
+  service:
+    name: php7.1-fpm
+    state: reloaded
+  become: true
+
+- name: reload php5.6-fpm
+  service:
+    name: php5.6-fpm
+    state: reloaded
+  become: true

@@ -1,0 +1,22 @@
+---
+- name: create certificate directory
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+  become: true
+
+- name: create nginx common config folder directory
+  file:
+    path: /etc/nginx/common
+    state: directory
+  become: true
+
+- name: ensure nginx php7.1-fpm config file is in place
+  template:
+    src: php7.1-fpm.conf
+    dest: /etc/nginx/common/php7.1-fpm.conf
+    owner: root
+    mode: 0644
+  notify: reload nginx
+  become: true
+
