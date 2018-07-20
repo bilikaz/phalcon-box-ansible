@@ -1,0 +1,19 @@
+---
+- name: ensure db is created
+  mysql_db:
+    login_host: "{{ db.host }}"
+    login_port: "{{ db.port }}"
+    login_user: "{{ db.root_user }}"
+    login_password: "{{ db.root_pass }}"
+    name: "{{ db.name }}"
+
+- name: ensure db user is created
+  mysql_user:
+    login_host: "{{ db.host }}"
+    login_port: "{{ db.port }}"
+    login_user: "{{ db.root_user }}"
+    login_password: "{{ db.root_pass }}"
+    name: "{{ db.user }}"
+    password: "{{ db.pass }}"
+    priv: "{{ db.name }}.*:ALL"
+    state: "present"

@@ -5,7 +5,6 @@
     creates: "/etc/nginx/ssl/{{ domain }}.key"
   become: true
 
-
 - name: ensure nginx domain config file is in place
   template:
     src: domain.conf

@@ -13,4 +13,5 @@
     - php
     - nginx
     - phalcon
+    - database
 

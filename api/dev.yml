@@ -1,0 +1,24 @@
+---
+- import_playbook: "../domain/dev.yml"
+  vars:
+    domain: api.local
+
+- name: api.local setup
+  hosts: dev
+  become: true
+
+  vars:
+    domain: api.local
+    db:
+      host: 127.0.0.1
+      port: 3306
+      name: api
+      user: api
+      pass: secret
+      root_user: homestead
+      root_pass: secret
+
+  roles:
+    - repository
+    - database
+

@@ -1,0 +1,54 @@
+---
+- name: Check if index.php exists
+  stat:
+    path: "/var/www/{{ domain }}/public_html/index.php"
+  register: index_exists
+
+- name: Clean folder for repository
+  file:
+    state: absent
+    path: "/var/www/{{ domain }}/public_html"
+  when: index_exists.stat.exists == false
+
+- name: ensure api repository exists
+  git:
+    repo: "https://github.com/bilikaz/phalcon-rest-api.git"
+    dest: "/var/www/{{ domain }}"
+    accept_hostkey: true
+    force: false
+    update: false
+  become: true
+  become_user: vagrant
+
+- name: run composer for api
+  shell: composer install --working-dir=/var/www/{{ domain }} >> /tmp/composer.log
+  become: true
+  become_user: vagrant
+
+- name: ensure keys dir exists
+  file:
+    dest: "/var/www/{{ domain }}/keys"
+    state: directory
+    mode: 0777
+    owner: vagrant
+  become: true
+
+- name: create private key
+  command: "openssl genrsa -out /var/www/{{ domain }}/keys/private.key 2048"
+  args:
+    creates: "/var/www/{{ domain }}/keys/private.key"
+  become: true
+
+- name: create public key
+  command: "openssl rsa -in /var/www/{{ domain }}/keys/private.key -pubout -out /var/www/{{ domain }}/keys/public.key"
+  args:
+    creates: "/var/www/{{ domain }}/keys/public.key"
+  become: true
+
+- name: ensure logs dir exists
+  file:
+    dest: "/var/www/{{ domain }}/logs"
+    state: directory
+    mode: 0777
+    owner: vagrant
+  become: true
